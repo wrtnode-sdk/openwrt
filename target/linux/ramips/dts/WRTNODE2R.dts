@@ -1,38 +1,36 @@
 /dts-v1/;
 
-/include/ "mt7620n.dtsi"
+/include/ "mt7628an.dtsi"
 
 / {
-	compatible = "wrtnode", "ralink,mt7620n-soc";
-	model = "WRTNODE";
+	compatible = "mediatek,wrtnode2r", "mediatek,mt7628an-soc";
+	model = "WRTnode2R";
 
 	chosen {
 		bootargs = "console=ttyS0,115200";
 	};
 
+	pinctrl {
+		state_default: pinctrl0 {
+			gpio {
+				ralink,group = "i2c", "gpio";
+				ralink,function = "gpio";
+			};
+		};
+	};
+
 	palmbus@10000000 {
-		gpio1: gpio@638 {
-			status = "okay";
-		};
-
-		gpio2: gpio@660 {
-			status = "okay";
-		};
-
-		gpio3: gpio@688 {
-			status = "okay";
-		};
-
 		spi@b00 {
 			status = "okay";
 
 			m25p80@0 {
 				#address-cells = <1>;
 				#size-cells = <1>;
-				compatible = "mx25l12805d";
+				compatible = "w25q256";
 				reg = <0 0>;
-				linux,modalias = "m25p80", "w25q128";
+				linux,modalias = "m25p80", "w25q256";
 				spi-max-frequency = <10000000>;
+				m25p,chunked-io = <32>;
 
 				partition@0 {
 					label = "u-boot";
@@ -54,44 +52,16 @@
 
 				partition@50000 {
 					label = "firmware";
-					reg = <0x50000 0xfb0000>;
+					reg = <0x50000 0x1fb0000>;
 				};
 			};
 		};
-	};
 
-	ehci@101c0000 {
-		status = "okay";
-	};
-
-	ohci@101c1000 {
-		status = "okay";
 	};
 
 	ethernet@10100000 {
 		mtd-mac-address = <&factory 0x4>;
-		ralink,port-map = "wllll";
-	};
-
-	wmac@10180000 {
-		ralink,mtd-eeprom = <&factory 0>;
-	};
-
-	pinctrl {
-		state_default: pinctrl0 {
-			default {
-				ralink,group = "ephy", "wled", "pa", "i2c", "wdt", "uartf", "spi refclk";
-				ralink,function = "gpio";
-			};
-		};
-	};
-
-	gpio-leds {
-		compatible = "gpio-leds";
-		indicator {
-			label = "wrtnode:blue:indicator";
-			gpios = <&gpio1 14 0>;
-		};
+		ralink,port-map = "llllw";
 	};
 
 	gpio-keys-polled {
@@ -101,9 +71,9 @@
 		poll-interval = <20>;
 		reset {
 			label = "reset";
-			gpios = <&gpio0 1 1>;
+			gpios = <&gpio0 5 1>;
 			linux,code = <0x198>;
 		};
 	};
-
 };
+
