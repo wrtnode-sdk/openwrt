@@ -854,72 +854,72 @@ endif
 # MT7620A Profiles
 #
 
-Image/Build/Profile/E1700=$(call BuildFirmware/UMedia/$(1),$(1),e1700,E1700,0x013326)
-Image/Build/Profile/MT7620a=$(call BuildFirmware/Default8M/$(1),$(1),mt7620a,MT7620a)
-Image/Build/Profile/MT7620a_MT7610e=$(call BuildFirmware/Default8M/$(1),$(1),mt7620a_mt7610e,MT7620a_MT7610e)
-Image/Build/Profile/MT7620a_MT7530=$(call BuildFirmware/Default8M/$(1),$(1),mt7620a_mt7530,MT7620a_MT7530)
-Image/Build/Profile/MT7620a_V22SG=$(call BuildFirmware/Default8M/$(1),$(1),mt7620a_v22sg,MT7620a_V22SG)
-br100_mtd_size=8126464
-Image/Build/Profile/AIBR100=$(call BuildFirmware/CustomFlash/$(1),$(1),ai-br100,AIBR100,$(br100_mtd_size),Ai-BR)
-Image/Build/Profile/RP-N53=$(call BuildFirmware/Default8M/$(1),$(1),rp_n53,RP-N53)
-whr_300hp2_mtd_size=7012352
-Image/Build/Profile/WHR300HP2=$(call BuildFirmware/CustomFlash/$(1),$(1),whr-300hp2,WHR-300HP2,$(whr_300hp2_mtd_size))
-Image/Build/Profile/WHR600D=$(call BuildFirmware/CustomFlash/$(1),$(1),whr-600d,WHR-600D,$(whr_300hp2_mtd_size))
-whr_1166d_mtd_size=15400960
-Image/Build/Profile/WHR1166D=$(call BuildFirmware/CustomFlash/$(1),$(1),whr-1166d,WHR-1166D,$(whr_1166hd_mtd_size))
-dlink810l_mtd_size=6881280
-Image/Build/Profile/CF-WR800N=$(call BuildFirmware/Default8M/$(1),$(1),cf-wr800n,CF-WR800N)
-Image/Build/Profile/DIR-810L=$(call BuildFirmware/CustomFlash/$(1),$(1),dir-810l,DIR-810L,$(dlink810l_mtd_size))
-na930_mtd_size=20971520
-Image/Build/Profile/NA930=$(call BuildFirmware/CustomFlash/$(1),$(1),na930,NA930,$(na930_mtd_size))
-Image/Build/Profile/MZK-750DHP=$(call BuildFirmware/Default8M/$(1),$(1),mzk-750dhp,MZK-750DHP)
-Image/Build/Profile/Y1=$(call BuildFirmware/Default16M/$(1),$(1),Lenovo-y1,Y1)
-Image/Build/Profile/Y1S=$(call BuildFirmware/Default16M/$(1),$(1),Lenovo-y1s,Y1S)
-Image/Build/Profile/MLW221=$(call BuildFirmware/Default16M/$(1),$(1),mlw221,MLW221)
-Image/Build/Profile/MLWG2=$(call BuildFirmware/Default16M/$(1),$(1),mlwg2,MLWG2)
-Image/Build/Profile/WMR300=$(call BuildFirmware/Default8M/$(1),$(1),wmr-300,WMR300)
-Image/Build/Profile/RT-N14U=$(call BuildFirmware/Default8M/$(1),$(1),rt-n14u,RT-N14U)
-Image/Build/Profile/WR8305RT=$(call BuildFirmware/Default8M/$(1),$(1),wr8305rt,WR8305RT)
+#Image/Build/Profile/E1700=$(call BuildFirmware/UMedia/$(1),$(1),e1700,E1700,0x013326)
+#Image/Build/Profile/MT7620a=$(call BuildFirmware/Default8M/$(1),$(1),mt7620a,MT7620a)
+#Image/Build/Profile/MT7620a_MT7610e=$(call BuildFirmware/Default8M/$(1),$(1),mt7620a_mt7610e,MT7620a_MT7610e)
+#Image/Build/Profile/MT7620a_MT7530=$(call BuildFirmware/Default8M/$(1),$(1),mt7620a_mt7530,MT7620a_MT7530)
+#Image/Build/Profile/MT7620a_V22SG=$(call BuildFirmware/Default8M/$(1),$(1),mt7620a_v22sg,MT7620a_V22SG)
+#br100_mtd_size=8126464
+#Image/Build/Profile/AIBR100=$(call BuildFirmware/CustomFlash/$(1),$(1),ai-br100,AIBR100,$(br100_mtd_size),Ai-BR)
+#Image/Build/Profile/RP-N53=$(call BuildFirmware/Default8M/$(1),$(1),rp_n53,RP-N53)
+#whr_300hp2_mtd_size=7012352
+#Image/Build/Profile/WHR300HP2=$(call BuildFirmware/CustomFlash/$(1),$(1),whr-300hp2,WHR-300HP2,$(whr_300hp2_mtd_size))
+#Image/Build/Profile/WHR600D=$(call BuildFirmware/CustomFlash/$(1),$(1),whr-600d,WHR-600D,$(whr_300hp2_mtd_size))
+#whr_1166d_mtd_size=15400960
+#Image/Build/Profile/WHR1166D=$(call BuildFirmware/CustomFlash/$(1),$(1),whr-1166d,WHR-1166D,$(whr_1166hd_mtd_size))
+#dlink810l_mtd_size=6881280
+#Image/Build/Profile/CF-WR800N=$(call BuildFirmware/Default8M/$(1),$(1),cf-wr800n,CF-WR800N)
+#Image/Build/Profile/DIR-810L=$(call BuildFirmware/CustomFlash/$(1),$(1),dir-810l,DIR-810L,$(dlink810l_mtd_size))
+#na930_mtd_size=20971520
+#Image/Build/Profile/NA930=$(call BuildFirmware/CustomFlash/$(1),$(1),na930,NA930,$(na930_mtd_size))
+#Image/Build/Profile/MZK-750DHP=$(call BuildFirmware/Default8M/$(1),$(1),mzk-750dhp,MZK-750DHP)
+#Image/Build/Profile/Y1=$(call BuildFirmware/Default16M/$(1),$(1),Lenovo-y1,Y1)
+#Image/Build/Profile/Y1S=$(call BuildFirmware/Default16M/$(1),$(1),Lenovo-y1s,Y1S)
+#Image/Build/Profile/MLW221=$(call BuildFirmware/Default16M/$(1),$(1),mlw221,MLW221)
+#Image/Build/Profile/MLWG2=$(call BuildFirmware/Default16M/$(1),$(1),mlwg2,MLWG2)
+#Image/Build/Profile/WMR300=$(call BuildFirmware/Default8M/$(1),$(1),wmr-300,WMR300)
+#Image/Build/Profile/RT-N14U=$(call BuildFirmware/Default8M/$(1),$(1),rt-n14u,RT-N14U)
+#Image/Build/Profile/WR8305RT=$(call BuildFirmware/Default8M/$(1),$(1),wr8305rt,WR8305RT)
 Image/Build/Profile/WRTNODE=$(call BuildFirmware/Default16M/$(1),$(1),wrtnode,WRTNODE)
-Image/Build/Profile/WT3020=$(call BuildFirmware/PorayDualSize/$(1),$(1),wt3020,WT3020)
-Image/Build/Profile/XIAOMI-MIWIFI-MINI=$(call BuildFirmware/Default16M/$(1),$(1),xiaomi-miwifi-mini,XIAOMI-MIWIFI-MINI)
-Image/Build/Profile/ZTE-Q7=$(call BuildFirmware/Default8M/$(1),$(1),zte-q7,ZTE-Q7)
-Image/Build/Profile/ZBT-WA05=$(call BuildFirmware/Default8M/$(1),$(1),zbt-wa05,ZBT-WA05)
-Image/Build/Profile/ArcherC20i=$(call BuildFirmware/Tplink/$(1),$(1),ArcherC20i,ArcherC20i)
-microwrt_mtd_size=16515072
-Image/Build/Profile/MicroWRT=$(call BuildFirmware/CustomFlash/$(1),$(1),microwrt,MicroWRT,$(microwrt_mtd_size))
+#Image/Build/Profile/WT3020=$(call BuildFirmware/PorayDualSize/$(1),$(1),wt3020,WT3020)
+#Image/Build/Profile/XIAOMI-MIWIFI-MINI=$(call BuildFirmware/Default16M/$(1),$(1),xiaomi-miwifi-mini,XIAOMI-MIWIFI-MINI)
+#Image/Build/Profile/ZTE-Q7=$(call BuildFirmware/Default8M/$(1),$(1),zte-q7,ZTE-Q7)
+#Image/Build/Profile/ZBT-WA05=$(call BuildFirmware/Default8M/$(1),$(1),zbt-wa05,ZBT-WA05)
+#Image/Build/Profile/ArcherC20i=$(call BuildFirmware/Tplink/$(1),$(1),ArcherC20i,ArcherC20i)
+#microwrt_mtd_size=16515072
+#Image/Build/Profile/MicroWRT=$(call BuildFirmware/CustomFlash/$(1),$(1),microwrt,MicroWRT,$(microwrt_mtd_size))
 
 
 ifeq ($(SUBTARGET),mt7620)
 define Image/Build/Profile/Default
-	$(call Image/Build/Profile/E1700,$(1))
-	$(call Image/Build/Profile/MT7620a,$(1))
-	$(call Image/Build/Profile/MT7620a_MT7610e,$(1))
-	$(call Image/Build/Profile/MT7620a_MT7530,$(1))
-	$(call Image/Build/Profile/MT7620a_V22SG,$(1))
-	$(call Image/Build/Profile/AIBR100,$(1))
-	$(call Image/Build/Profile/CF-WR800N,$(1))
-	$(call Image/Build/Profile/RP-N53,$(1))
-	$(call Image/Build/Profile/DIR-810L,$(1))
-	$(call Image/Build/Profile/WHR300HP2,$(1))
-	$(call Image/Build/Profile/WHR600D,$(1))
-	$(call Image/Build/Profile/WHR1166D,$(1))
-	$(call Image/Build/Profile/MZK-750DHP,$(1))
-	$(call Image/Build/Profile/NA930,$(1))
-	$(call Image/Build/Profile/Y1,$(1))
-	$(call Image/Build/Profile/Y1S,$(1))
-	$(call Image/Build/Profile/MLW221,$(1))
-	$(call Image/Build/Profile/MLWG2,$(1))
-	$(call Image/Build/Profile/WMR300,$(1))
-	$(call Image/Build/Profile/RT-N14U,$(1))
-	$(call Image/Build/Profile/WR8305RT,$(1))
+	#$(call Image/Build/Profile/E1700,$(1))
+	#$(call Image/Build/Profile/MT7620a,$(1))
+	#$(call Image/Build/Profile/MT7620a_MT7610e,$(1))
+	#$(call Image/Build/Profile/MT7620a_MT7530,$(1))
+	#$(call Image/Build/Profile/MT7620a_V22SG,$(1))
+	#$(call Image/Build/Profile/AIBR100,$(1))
+	#$(call Image/Build/Profile/CF-WR800N,$(1))
+	#$(call Image/Build/Profile/RP-N53,$(1))
+	#$(call Image/Build/Profile/DIR-810L,$(1))
+	#$(call Image/Build/Profile/WHR300HP2,$(1))
+	#$(call Image/Build/Profile/WHR600D,$(1))
+	#$(call Image/Build/Profile/WHR1166D,$(1))
+	#$(call Image/Build/Profile/MZK-750DHP,$(1))
+	#$(call Image/Build/Profile/NA930,$(1))
+	#$(call Image/Build/Profile/Y1,$(1))
+	#$(call Image/Build/Profile/Y1S,$(1))
+	#$(call Image/Build/Profile/MLW221,$(1))
+	#$(call Image/Build/Profile/MLWG2,$(1))
+	#$(call Image/Build/Profile/WMR300,$(1))
+	#$(call Image/Build/Profile/RT-N14U,$(1))
+	#$(call Image/Build/Profile/WR8305RT,$(1))
 	$(call Image/Build/Profile/WRTNODE,$(1))
-	$(call Image/Build/Profile/WT3020,$(1))
-	$(call Image/Build/Profile/XIAOMI-MIWIFI-MINI,$(1))
-	$(call Image/Build/Profile/ZTE-Q7,$(1))
-	$(call Image/Build/Profile/ZBT-WA05,$(1))
-	$(call Image/Build/Profile/ArcherC20i,$(1))
-	$(call Image/Build/Profile/MicroWRT,$(1))
+	#$(call Image/Build/Profile/WT3020,$(1))
+	#$(call Image/Build/Profile/XIAOMI-MIWIFI-MINI,$(1))
+	#$(call Image/Build/Profile/ZTE-Q7,$(1))
+	#$(call Image/Build/Profile/ZBT-WA05,$(1))
+	#$(call Image/Build/Profile/ArcherC20i,$(1))
+	#$(call Image/Build/Profile/MicroWRT,$(1))
 endef
 endif
 
@@ -978,11 +978,11 @@ endef
 # MT7628 Profiles
 #
 
-Image/Build/Profile/MT7628=$(call BuildFirmware/Default4M/$(1),$(1),mt7628,MT7628)
+#Image/Build/Profile/MT7628=$(call BuildFirmware/Default4M/$(1),$(1),mt7628,MT7628)
 
 ifeq ($(SUBTARGET),mt7628)
 define Image/Build/Profile/Default
-	$(call Image/Build/Profile/MT7628,$(1))
+	#$(call Image/Build/Profile/MT7628,$(1))
 endef
 endif
 
@@ -991,13 +991,13 @@ endif
 # MT7688 Profiles
 #
 
-Image/Build/Profile/MT7688=$(call BuildFirmware/Default4M/$(1),$(1),mt7628,MT7628)
-Image/Build/Profile/LinkIt7688=$(call BuildFirmware/Default32M/$(1),$(1),LinkIt7688,LINKIT7688)
+#Image/Build/Profile/MT7688=$(call BuildFirmware/Default4M/$(1),$(1),mt7628,MT7628)
+#Image/Build/Profile/LinkIt7688=$(call BuildFirmware/Default32M/$(1),$(1),LinkIt7688,LINKIT7688)
 
 ifeq ($(SUBTARGET),mt7628)
 define Image/Build/Profile/Default
-	$(call Image/Build/Profile/MT7688,$(1))
-	$(call Image/Build/Profile/LinkIt7688,$(1))
+	#$(call Image/Build/Profile/MT7688,$(1))
+	#$(call Image/Build/Profile/LinkIt7688,$(1))
 endef
 endif
 
