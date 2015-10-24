@@ -56,7 +56,7 @@
 
 		uart1@d00 {
 			status = "okay";
-		}
+		};
 
 	};
 
