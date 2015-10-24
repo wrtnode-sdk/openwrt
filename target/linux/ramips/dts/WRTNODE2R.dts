@@ -55,13 +55,26 @@
 					reg = <0x50000 0x1fb0000>;
 				};
 			};
+
 		};
+
+		uart1@d00 {
+			status = "okay";
+		}
 
 	};
 
 	ethernet@10100000 {
 		mtd-mac-address = <&factory 0x4>;
 		ralink,port-map = "llllw";
+	};
+
+	sdhci@10130000 {
+		status = "okay";
+	};
+
+	pcie@10140000 {
+		status = "okay";
 	};
 
 	gpio-keys-polled {
