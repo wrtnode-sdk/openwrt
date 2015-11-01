@@ -196,6 +196,8 @@ get_status_led() {
 	wr8305rt)
 		status_led="wr8305rt:sys"
 		;;
+	wrtnode2r | \
+	wrtnode2p | \
 	wrtnode)
 		status_led="wrtnode:blue:indicator"
 		;;
