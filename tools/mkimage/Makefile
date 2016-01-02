@@ -31,16 +31,8 @@ define Host/Prepare
 endef
 
 define Host/Compile
-<<<<<<< HEAD
-	$(MAKE) -C $(HOST_BUILD_DIR) defconfig
-
-	$(MAKE) -C $(HOST_BUILD_DIR) tools-only \
-		HOSTCFLAGS="$(HOST_CFLAGS)" \
-	   	HOSTLDFLAGS="$(HOST_LDFLAGS)"
-=======
 	$(MAKE) -C $(HOST_BUILD_DIR) defconfig   HOSTCFLAGS="$(HOST_CPPFLAGS) $(HOST_CFLAGS)" HOSTLDFLAGS="$(HOST_LDFLAGS)"
 	$(MAKE) -C $(HOST_BUILD_DIR) tools-only  HOSTCFLAGS="$(HOST_CPPFLAGS) $(HOST_CFLAGS)" HOSTLDFLAGS="$(HOST_LDFLAGS)"
->>>>>>> upstream/master
 endef
 
 define Host/Install
