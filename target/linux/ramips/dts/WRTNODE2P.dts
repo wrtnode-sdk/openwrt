@@ -51,6 +51,15 @@
 					label = "firmware";
 					reg = <0x50000 0x1fb0000>;
 				};
+
+			};
+
+			spidev@1 {
+				#address-cells = <1>;
+				#size-cells = <1>;
+				compatible = "spidev";
+				reg = <1 0>;
+				spi-max-frequency = <40000000>;
 			};
 		};
 
