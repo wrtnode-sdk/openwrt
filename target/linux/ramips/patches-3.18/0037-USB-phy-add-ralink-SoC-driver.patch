@@ -21,11 +21,15 @@
 +obj-$(CONFIG_PHY_RALINK_USB)		+= phy-ralink-usb.o
 --- /dev/null
 +++ b/drivers/phy/phy-ralink-usb.c
+<<<<<<< HEAD
 @@ -0,0 +1,366 @@
+=======
+@@ -0,0 +1,228 @@
+>>>>>>> upstream/master
 +/*
 + * Allwinner ralink USB phy driver
 + *
-+ * Copyright (C) 2014 John Crispin <blogic@openwrt.org>
++ * Copyright (C) 2016 John Crispin <blogic@openwrt.org>
 + *
 + * Based on code from
 + * Allwinner Technology Co., Ltd. <www.allwinnertech.com>
@@ -68,6 +72,20 @@
 +#define RT_SYSC_REG_CLKCFG1		0x030
 +#define RT_SYSC_REG_USB_PHY_CFG		0x05c
 +
++#define OFS_U2_PHY_AC0                  0x00
++#define OFS_U2_PHY_AC1                  0x04
++#define OFS_U2_PHY_AC2                  0x08
++#define OFS_U2_PHY_ACR0                 0x10
++#define OFS_U2_PHY_ACR1                 0x14
++#define OFS_U2_PHY_ACR2                 0x18
++#define OFS_U2_PHY_ACR3                 0x1C
++#define OFS_U2_PHY_ACR4                 0x20
++#define OFS_U2_PHY_AMON0                0x24
++#define OFS_U2_PHY_DCR0                 0x60
++#define OFS_U2_PHY_DCR1                 0x64
++#define OFS_U2_PHY_DTM0                 0x68
++#define OFS_U2_PHY_DTM1                 0x6C
++
 +#define RT_RSTCTRL_UDEV			BIT(25)
 +#define RT_RSTCTRL_UHST			BIT(22)
 +#define RT_SYSCFG1_USB0_HOST_MODE	BIT(10)
@@ -80,6 +98,7 @@
 +#define USB_PHY_UTMI_8B60M		BIT(1)
 +#define UDEV_WAKEUP			BIT(0)
 +
+<<<<<<< HEAD
 +#define SYSCFG1_REG		(RALINK_SYSCTL_BASE + 0x14)
 +#define RALINK_UHST_MODE	(1UL<<10)
 +
@@ -221,16 +240,45 @@
 +		printk("U2PHY P%d set SRCTRL %s value: %d\n", port_id, "default", 4);
 +	}
 +	sysRegWrite(u2_phy_reg_base + OFS_U2_PHY_ACR0, reg_val);
+=======
++struct ralink_usb_phy {
++	struct reset_control	*rstdev;
++	struct reset_control	*rsthost;
++	u32			clk;
++	struct phy		*phy;
++	void __iomem		*base;
++};
++
++static void u2_phy_w32(struct ralink_usb_phy *phy, u32 val, u32 reg)
++{
++	iowrite32(val, phy->base + reg);
+>>>>>>> upstream/master
 +}
 +
-+static int ralink_usb_phy_init(struct phy *_phy)
++static u32 u2_phy_r32(struct ralink_usb_phy *phy, u32 reg)
 +{
-+	return 0;
++	return ioread32(phy->base + reg);
 +}
 +
-+static int ralink_usb_phy_exit(struct phy *_phy)
++static void
++u2_phy_init(struct ralink_usb_phy *phy)
 +{
-+	return 0;
++	u2_phy_r32(phy, OFS_U2_PHY_AC2);
++	u2_phy_r32(phy, OFS_U2_PHY_ACR0);
++	u2_phy_r32(phy, OFS_U2_PHY_DCR0);
++
++	u2_phy_w32(phy, 0x00ffff02, OFS_U2_PHY_DCR0);
++	u2_phy_r32(phy, OFS_U2_PHY_DCR0);
++	u2_phy_w32(phy, 0x00555502, OFS_U2_PHY_DCR0);
++	u2_phy_r32(phy, OFS_U2_PHY_DCR0);
++	u2_phy_w32(phy, 0x00aaaa02, OFS_U2_PHY_DCR0);
++	u2_phy_r32(phy, OFS_U2_PHY_DCR0);
++	u2_phy_w32(phy, 0x00000402, OFS_U2_PHY_DCR0);
++	u2_phy_r32(phy, OFS_U2_PHY_DCR0);
++	u2_phy_w32(phy, 0x0048086a, OFS_U2_PHY_AC0);
++	u2_phy_w32(phy, 0x4400001c, OFS_U2_PHY_AC1);
++	u2_phy_w32(phy, 0xc0200000, OFS_U2_PHY_ACR3);
++	u2_phy_w32(phy, 0x02000000, OFS_U2_PHY_DTM0);
 +}
 +
 +static void
@@ -316,62 +364,131 @@
 +
 +static int ralink_usb_phy_power_on(struct phy *_phy)
 +{
+<<<<<<< HEAD
 +	if (atomic_inc_return(&rt3xxx_power_instance) == 1)
 +		rt_usb_wake_up();
+=======
++	struct ralink_usb_phy *phy = phy_get_drvdata(_phy);
++	u32 t;
++
++	/* enable the phy */
++	rt_sysc_m32(0, phy->clk, RT_SYSC_REG_CLKCFG1);
++
++	/* setup host mode */
++	rt_sysc_m32(0, RT_SYSCFG1_USB0_HOST_MODE, RT_SYSC_REG_SYSCFG1);
++
++	/* deassert the reset lines */
++	reset_control_deassert(phy->rsthost);
++	reset_control_deassert(phy->rstdev);
++
++	/*
++	 * The SDK kernel had a delay of 100ms. however on device
++	 * testing showed that 10ms is enough
++	 */
++	mdelay(10);
++
++	if (!IS_ERR(phy->base))
++		u2_phy_init(phy);
++
++	/* print some status info */
++	t = rt_sysc_r32(RT_SYSC_REG_USB_PHY_CFG);
++	dev_info(&phy->phy->dev, "remote usb device wakeup %s\n",
++		(t & UDEV_WAKEUP) ? ("enabled") : ("disabled"));
++	if (t & USB_PHY_UTMI_8B60M)
++		dev_info(&phy->phy->dev, "UTMI 8bit 60MHz\n");
++	else
++		dev_info(&phy->phy->dev, "UTMI 16bit 30MHz\n");
+>>>>>>> upstream/master
 +
 +	return 0;
 +}
 +
 +static int ralink_usb_phy_power_off(struct phy *_phy)
 +{
+<<<<<<< HEAD
 +	if (atomic_dec_return(&rt3xxx_power_instance) == 0)
 +		rt_usb_sleep();
+=======
++	struct ralink_usb_phy *phy = phy_get_drvdata(_phy);
++
++	/* assert the reset lines */
++	reset_control_assert(phy->rstdev);
++	reset_control_assert(phy->rsthost);
++
++	/* disable the phy */
++	rt_sysc_m32(phy->clk, 0, RT_SYSC_REG_CLKCFG1);
+>>>>>>> upstream/master
 +
 +	return 0;
 +}
 +
 +static struct phy_ops ralink_usb_phy_ops = {
-+	.init		= ralink_usb_phy_init,
-+	.exit		= ralink_usb_phy_exit,
 +	.power_on	= ralink_usb_phy_power_on,
 +	.power_off	= ralink_usb_phy_power_off,
 +	.owner		= THIS_MODULE,
 +};
 +
-+static struct phy *ralink_usb_phy_xlate(struct device *dev,
-+					struct of_phandle_args *args)
-+{
-+	return rt_phy;
-+}
-+
 +static const struct of_device_id ralink_usb_phy_of_match[] = {
-+	{ .compatible = "ralink,rt3xxx-usbphy", .data = (void *) (RT_CLKCFG1_UPHY1_CLK_EN | RT_CLKCFG1_UPHY0_CLK_EN) },
-+	{ .compatible = "ralink,mt7620a-usbphy", .data = (void *) (MT7620_CLKCFG1_UPHY1_CLK_EN | MT7620_CLKCFG1_UPHY0_CLK_EN) },
++	{
++		.compatible = "ralink,rt3xxx-usbphy",
++		.data = (void *) (RT_CLKCFG1_UPHY1_CLK_EN |
++				  RT_CLKCFG1_UPHY0_CLK_EN)
++	},
++	{
++		.compatible = "ralink,mt7620a-usbphy",
++		.data = (void *) (MT7620_CLKCFG1_UPHY1_CLK_EN |
++				  MT7620_CLKCFG1_UPHY0_CLK_EN) },
 +	{ },
 +};
 +MODULE_DEVICE_TABLE(of, ralink_usb_phy_of_match);
 +
 +static int ralink_usb_phy_probe(struct platform_device *pdev)
 +{
++	struct resource *res;
 +	struct device *dev = &pdev->dev;
 +	struct phy_provider *phy_provider;
 +	const struct of_device_id *match;
++	struct ralink_usb_phy *phy;
++
++	phy = devm_kzalloc(dev, sizeof(*phy), GFP_KERNEL);
++	if (!phy)
++		return -ENOMEM;
 +
 +	printk("%s:%s[%d]\n", __FILE__, __func__, __LINE__);
 +	match = of_match_device(ralink_usb_phy_of_match, &pdev->dev);
-+	phy_clk = (int) match->data;
++	if (!match)
++		return -ENODEV;
 +
-+	rsthost = devm_reset_control_get(&pdev->dev, "host");
-+	rstdev = devm_reset_control_get(&pdev->dev, "device");
++	phy->clk = (int) match->data;
 +
-+	rt_phy = devm_phy_create(dev, NULL, &ralink_usb_phy_ops, NULL);
-+	if (IS_ERR(rt_phy)) {
-+		dev_err(dev, "failed to create PHY\n");
-+		return PTR_ERR(rt_phy);
++	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	phy->base = devm_ioremap_resource(&pdev->dev, res);
++
++	phy->rsthost = devm_reset_control_get(&pdev->dev, "host");
++	if (IS_ERR(phy->rsthost)) {
++		dev_err(dev, "host reset is missing\n");
++		return PTR_ERR(phy->rsthost);
 +	}
 +
++	phy->rstdev = devm_reset_control_get(&pdev->dev, "device");
++	if (IS_ERR(phy->rstdev)) {
++		dev_err(dev, "device reset is missing\n");
++		return PTR_ERR(phy->rstdev);
++	}
++
++	phy->phy = devm_phy_create(dev, NULL, &ralink_usb_phy_ops, NULL);
++	if (IS_ERR(phy->phy)) {
++		dev_err(dev, "failed to create PHY\n");
++		return PTR_ERR(phy->phy);
++	}
++	phy_set_drvdata(phy->phy, phy);
++
+<<<<<<< HEAD
 +	phy_provider = devm_of_phy_provider_register(dev, ralink_usb_phy_xlate);
 +printk("%s:%s[%d]\n", __FILE__, __func__, __LINE__);
+=======
++	phy_provider = devm_of_phy_provider_register(dev, of_phy_simple_xlate);
+>>>>>>> upstream/master
 +
 +	return PTR_ERR_OR_ZERO(phy_provider);
 +}
