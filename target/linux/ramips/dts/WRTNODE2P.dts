@@ -6,6 +6,9 @@
 	compatible = "mediatek,wrtnode2p", "mediatek,mt7628an-soc";
 	model = "WRTnode2P";
 
+        chosen {
+                bootargs = "console=ttyS0,115200";
+        };
 
 	pinctrl {
 		state_default: pinctrl0 {
