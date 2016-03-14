@@ -948,7 +948,6 @@ Image/Build/Profile/WRTNODE=$(call BuildFirmware/Default16M/$(1),$(1),wrtnode,WR
 
 ifeq ($(SUBTARGET),mt7620)
 define Image/Build/Profile/Default
-<<<<<<< HEAD
 	#$(call Image/Build/Profile/E1700,$(1))
 	#$(call Image/Build/Profile/MT7620a,$(1))
 	#$(call Image/Build/Profile/MT7620a_MT7610e,$(1))
@@ -970,30 +969,6 @@ define Image/Build/Profile/Default
 	#$(call Image/Build/Profile/WMR300,$(1))
 	#$(call Image/Build/Profile/RT-N14U,$(1))
 	#$(call Image/Build/Profile/WR8305RT,$(1))
-=======
-	$(call Image/Build/Profile/E1700,$(1))
-	$(call Image/Build/Profile/EX2700,$(1))
-	$(call Image/Build/Profile/MT7620a,$(1))
-	$(call Image/Build/Profile/MT7620a_MT7610e,$(1))
-	$(call Image/Build/Profile/MT7620a_MT7530,$(1))
-	$(call Image/Build/Profile/MT7620a_V22SG,$(1))
-	$(call Image/Build/Profile/AIBR100,$(1))
-	$(call Image/Build/Profile/CF-WR800N,$(1))
-	$(call Image/Build/Profile/RP-N53,$(1))
-	$(call Image/Build/Profile/DIR-810L,$(1))
-	$(call Image/Build/Profile/WHR300HP2,$(1))
-	$(call Image/Build/Profile/WHR600D,$(1))
-	$(call Image/Build/Profile/WHR1166D,$(1))
-	$(call Image/Build/Profile/MZK-750DHP,$(1))
-	$(call Image/Build/Profile/NA930,$(1))
-	$(call Image/Build/Profile/Y1,$(1))
-	$(call Image/Build/Profile/Y1S,$(1))
-	$(call Image/Build/Profile/MLW221,$(1))
-	$(call Image/Build/Profile/MLWG2,$(1))
-	$(call Image/Build/Profile/WMR300,$(1))
-	$(call Image/Build/Profile/RT-N14U,$(1))
-	$(call Image/Build/Profile/WR8305RT,$(1))
->>>>>>> upstream/master
 	$(call Image/Build/Profile/WRTNODE,$(1))
 	#$(call Image/Build/Profile/WT3020,$(1))
 	#$(call Image/Build/Profile/XIAOMI-MIWIFI-MINI,$(1))
