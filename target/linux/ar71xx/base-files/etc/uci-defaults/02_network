@@ -439,6 +439,7 @@ tl-wr841n-v9 |\
 whr-g301n |\
 whr-hp-g300n |\
 whr-hp-gn |\
+wrtnode2q |\
 wzr-hp-ag300h)
 	ucidef_set_interfaces_lan_wan "eth0" "eth1"
 	ucidef_add_switch "switch0" "1" "1"

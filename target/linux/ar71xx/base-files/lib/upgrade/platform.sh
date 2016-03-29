@@ -236,6 +236,7 @@ platform_check_image() {
 	wpj531 | \
 	wndap360 | \
 	wpj344 | \
+	wrtnode2q | \
 	wzr-hp-g300nh2 | \
 	wzr-hp-g300nh | \
 	wzr-hp-g450h | \
