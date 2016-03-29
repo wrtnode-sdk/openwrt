@@ -112,14 +112,14 @@ static void __init wrtnode2q_setup(void)
 	ath79_eth1_data.duplex = DUPLEX_FULL;
 	ath79_switch_data.phy_poll_mask |= BIT(4);
 	ath79_switch_data.phy4_mii_en = 1;
-	ath79_register_eth(0);
+	ath79_register_eth(1);
 
 	/* WAN port */
 	ath79_eth0_data.phy_if_mode = PHY_INTERFACE_MODE_MII;
 	ath79_eth0_data.speed = SPEED_100;
 	ath79_eth0_data.duplex = DUPLEX_FULL;
 	ath79_eth0_data.phy_mask = BIT(4);
-	ath79_register_eth(1);
+	ath79_register_eth(0);
 }
 
 MIPS_MACHINE(ATH79_MACH_WRTNODE2Q, "WRTNODE2Q", "WRTnode2Q board",
