@@ -34,6 +34,7 @@
 #include "dev-usb.h"
 #include "dev-wmac.h"
 #include "machtypes.h"
+#include "pci.h"
 
 #define WRTNODE2Q_GPIO_LED_WLAN		12
 #define WRTNODE2Q_GPIO_LED_WPS		13
