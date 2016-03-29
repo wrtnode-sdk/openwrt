@@ -122,5 +122,5 @@ static void __init wrtnode2q_setup(void)
 	ath79_register_eth(1);
 }
 
-MIPS_MACHINE(ATH79_MACH_WRTNODE2Q, "WRTnode2Q", "WRTnode2Q board",
+MIPS_MACHINE(ATH79_MACH_WRTNODE2Q, "WRTNODE2Q", "WRTnode2Q board",
 	     wrtnode2q_setup);
