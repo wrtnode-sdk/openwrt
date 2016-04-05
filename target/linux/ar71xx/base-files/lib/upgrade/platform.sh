@@ -187,6 +187,7 @@ platform_check_image() {
 	mr12 | \
 	mr16 | \
 	wpj558 | \
+	wrtnode2q | \
 	zcn-1523h-2 | \
 	zcn-1523h-5)
 		[ "$magic_long" != "68737173" -a "$magic_long" != "19852003" ] && {
@@ -236,7 +237,6 @@ platform_check_image() {
 	wpj531 | \
 	wndap360 | \
 	wpj344 | \
-	wrtnode2q | \
 	wzr-hp-g300nh2 | \
 	wzr-hp-g300nh | \
 	wzr-hp-g450h | \
