@@ -10,6 +10,10 @@
 		bootargs = "console=ttyS0,115200";
 	};
 
+	aliases {
+		spi0 = &spi0;
+	};
+
 	pinctrl {
 		state_default: pinctrl0 {
 			gpio {
@@ -20,7 +24,7 @@
 	};
 
 	palmbus@10000000 {
-		spi@b00 {
+		spi0: spi@b00 {
 			status = "okay";
 
 			m25p80@0 {
