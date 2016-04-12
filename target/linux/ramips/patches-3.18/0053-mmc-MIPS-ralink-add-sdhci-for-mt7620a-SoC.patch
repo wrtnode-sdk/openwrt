@@ -4091,7 +4091,7 @@ Signed-off-by: John Crispin <blogic@openwrt.org>
 +		present = (sdr_read32(MSDC_PS) & MSDC_PS_CDSTS) ? 0 : 1; 
 +        else
 +		present = (sdr_read32(MSDC_PS) & MSDC_PS_CDSTS) ? 1 : 0; 
-+        host->card_inserted = present;  
++        host->card_inserted = 1;  
 +#endif        
 +        spin_unlock_irqrestore(&host->lock, flags);
 +    } else {
