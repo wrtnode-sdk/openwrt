@@ -25,7 +25,7 @@ Signed-off-by: John Crispin <blogic@openwrt.org>
 
 --- a/drivers/mmc/host/Kconfig
 +++ b/drivers/mmc/host/Kconfig
-@@ -773,3 +773,5 @@
+@@ -773,3 +773,5 @@ config MMC_SUNXI
  	help
  	  This selects support for the SD/MMC Host Controller on
  	  Allwinner sunxi SoCs.
@@ -1956,7 +1956,7 @@ Signed-off-by: John Crispin <blogic@openwrt.org>
 +	.clk_drv        = 4,
 +	.cmd_drv        = 4,
 +	.dat_drv        = 4,
-+	.data_pins      = 4,
++	.data_pins      = 1,
 +	.data_offset    = 0,
 +	.flags          = MSDC_SYS_SUSPEND | MSDC_CD_PIN_EN | MSDC_REMOVABLE | MSDC_HIGHSPEED,
 +//	.flags          = MSDC_SYS_SUSPEND | MSDC_WP_PIN_EN | MSDC_CD_PIN_EN | MSDC_REMOVABLE,
@@ -4091,7 +4091,7 @@ Signed-off-by: John Crispin <blogic@openwrt.org>
 +		present = (sdr_read32(MSDC_PS) & MSDC_PS_CDSTS) ? 0 : 1; 
 +        else
 +		present = (sdr_read32(MSDC_PS) & MSDC_PS_CDSTS) ? 1 : 0; 
-+        host->card_inserted = present;  
++        host->card_inserted = 1;  
 +#endif        
 +        spin_unlock_irqrestore(&host->lock, flags);
 +    } else {
@@ -4781,7 +4781,7 @@ Signed-off-by: John Crispin <blogic@openwrt.org>
 +//#elif defined (CONFIG_RALINK_MT7628)
 +    /* TODO: maybe omitted when RAether already toggle AGPIO_CFG */
 +    reg = sdr_read32((volatile u32*)(RALINK_SYSCTL_BASE + 0x3c));
-+    reg |= (BIT(4) | BIT(5)) << 16;
++    reg |= 0x1e << 16;
 +    sdr_write32((volatile u32*)(RALINK_SYSCTL_BASE + 0x3c), reg);
 +
 +    reg = sdr_read32((volatile u32*)(RALINK_SYSCTL_BASE + 0x60)) & ~(0x3<<10);

@@ -114,6 +114,10 @@ case $board in
 	esr-9753)
 		set_wifi_led "rt2800pci-phy0::radio"
 		;;
+	ex2700)
+		ucidef_set_led_default "power_r" "POWER (red)" "ex2700:red:power" "0"
+		set_wifi_led "ex2700:green:router"
+		;;
 	f5d8235-v1)
 		set_usb_led "f5d8235-v1:blue:storage"
 		;;
@@ -257,6 +261,11 @@ case $board in
 		ucidef_set_led_default "power" "power" "lenovo:blue:power" "1"
 		set_usb_led "lenovo:blue:usb"
 		set_wifi_led "lenovo:blue:wifi"
+		;;
+	zbt-wg2626)
+		ucidef_set_led_default "power" "power" "zbt-wg2626:green:power" "1"
+		set_wifi_led "zbt-wg2626:green:air"
+		set_usb_led "zbt-wg2626:green:usb"
 		;;
 	zte-q7)
 		set_wifi_led "zte:blue:status"

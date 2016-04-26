@@ -6,6 +6,9 @@
 	compatible = "mediatek,wrtnode2p", "mediatek,mt7628an-soc";
 	model = "WRTnode2P";
 
+        chosen {
+                bootargs = "console=ttyS0,115200";
+        };
 
 	pinctrl {
 		state_default: pinctrl0 {
@@ -51,6 +54,15 @@
 					label = "firmware";
 					reg = <0x50000 0x1fb0000>;
 				};
+
+			};
+
+			spidev@1 {
+				#address-cells = <1>;
+				#size-cells = <1>;
+				compatible = "spidev";
+				reg = <1 0>;
+				spi-max-frequency = <40000000>;
 			};
 		};
 
@@ -72,6 +84,14 @@
 	pcie@10140000 {
 		status = "okay";
 	};
+
+	gpio-leds {
+		compatible = "gpio-leds";
+		indicator {
+			label = "wrtnode:blue:indicator";
+			gpios = <&gpio1 9 1>;
+		};
+	}; 
 
 
 	gpio-keys-polled {
