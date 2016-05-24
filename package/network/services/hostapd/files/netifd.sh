@@ -662,6 +662,7 @@ wpa_supplicant_add_network() {
 	[ -n "$ibss_htmode" ] && append network_data "htmode=$ibss_htmode" "$N$T"
 
 	cat >> "$_config" <<EOF
+min_scan_gap=15
 network={
 	$scan_ssid
 	ssid="$ssid"

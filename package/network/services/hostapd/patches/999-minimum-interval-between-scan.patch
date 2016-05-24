@@ -1,0 +1,93 @@
+--- a/wpa_supplicant/config.c
++++ b/wpa_supplicant/config.c
+@@ -3670,6 +3670,7 @@ struct wpa_config * wpa_config_alloc_emp
+ 	config->bss_expiration_age = DEFAULT_BSS_EXPIRATION_AGE;
+ 	config->bss_expiration_scan_count = DEFAULT_BSS_EXPIRATION_SCAN_COUNT;
+ 	config->max_num_sta = DEFAULT_MAX_NUM_STA;
++	config->min_scan_gap = DEFAULT_MIN_SCAN_GAP;
+ 	config->access_network_type = DEFAULT_ACCESS_NETWORK_TYPE;
+ 	config->scan_cur_freq = DEFAULT_SCAN_CUR_FREQ;
+ 	config->wmm_ac_params[0] = ac_be;
+@@ -4287,6 +4288,7 @@ static const struct global_parse_data gl
+ 	{ INT(dot11RSNAConfigPMKLifetime), 0 },
+ 	{ INT(dot11RSNAConfigPMKReauthThreshold), 0 },
+ 	{ INT(dot11RSNAConfigSATimeout), 0 },
++	{ INT(min_scan_gap), 0 },
+ #ifndef CONFIG_NO_CONFIG_WRITE
+ 	{ INT(update_config), 0 },
+ #endif /* CONFIG_NO_CONFIG_WRITE */
+--- a/wpa_supplicant/config.h
++++ b/wpa_supplicant/config.h
+@@ -27,6 +27,7 @@
+ #define DEFAULT_BSS_EXPIRATION_AGE 180
+ #define DEFAULT_BSS_EXPIRATION_SCAN_COUNT 2
+ #define DEFAULT_MAX_NUM_STA 128
++#define DEFAULT_MIN_SCAN_GAP 0
+ #define DEFAULT_ACCESS_NETWORK_TYPE 15
+ #define DEFAULT_SCAN_CUR_FREQ 0
+ #define DEFAULT_P2P_SEARCH_DELAY 500
+@@ -811,6 +812,9 @@ struct wpa_config {
+ 	 */
+ 	int disassoc_low_ack;
+ 
++	/* Minimum interval between scan requests, in seconds */
++	int min_scan_gap;
++
+ 	/**
+ 	 * interworking - Whether Interworking (IEEE 802.11u) is enabled
+ 	 */
+--- a/wpa_supplicant/events.c
++++ b/wpa_supplicant/events.c
+@@ -1426,6 +1426,7 @@ static int _wpa_supplicant_event_scan_re
+ 		goto scan_work_done;
+ 	}
+ 
++	wpa_s->last_scan_rx_sec = time(NULL);
+ 	wpa_dbg(wpa_s, MSG_DEBUG, "New scan results available (own=%u ext=%u)",
+ 		wpa_s->own_scan_running, wpa_s->radio->external_scan_running);
+ 	if (wpa_s->last_scan_req == MANUAL_SCAN_REQ &&
+--- a/wpa_supplicant/scan.c
++++ b/wpa_supplicant/scan.c
+@@ -1070,7 +1070,7 @@ void wpa_supplicant_update_scan_int(stru
+  */
+ void wpa_supplicant_req_scan(struct wpa_supplicant *wpa_s, int sec, int usec)
+ {
+-	int res;
++	int res, n;
+ 
+ 	if (wpa_s->p2p_mgmt) {
+ 		wpa_dbg(wpa_s, MSG_DEBUG,
+@@ -1079,6 +1079,23 @@ void wpa_supplicant_req_scan(struct wpa_
+ 		return;
+ 	}
+ 
++	/* With lots of VIFS, we can end up trying to scan very often.
++	 * This can cause us to not be able to associate due to missing
++	 * EAPOL key messages and such.  So, allow a minimum time between
++	 * scans.
++	 */
++	if (wpa_s->conf->min_scan_gap) {
++		int mingap;
++		n = time(NULL);
++		if (n >= wpa_s->last_scan_rx_sec)
++			wpa_s->last_scan_rx_sec = n;
++
++		mingap = wpa_s->conf->min_scan_gap
++			- (n - wpa_s->last_scan_rx_sec);
++		if (sec < mingap)
++			sec = mingap;
++	}
++
+ 	res = eloop_deplete_timeout(sec, usec, wpa_supplicant_scan, wpa_s,
+ 				    NULL);
+ 	if (res == 1) {
+--- a/wpa_supplicant/wpa_supplicant_i.h
++++ b/wpa_supplicant/wpa_supplicant_i.h
+@@ -474,6 +474,7 @@ struct wpa_supplicant {
+ 	int key_mgmt;
+ 	int wpa_proto;
+ 	int mgmt_group_cipher;
++	int last_scan_rx_sec;
+ 
+ 	void *drv_priv; /* private data used by driver_ops */
+ 	void *global_drv_priv;
