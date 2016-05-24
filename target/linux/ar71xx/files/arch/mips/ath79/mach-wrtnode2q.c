@@ -89,7 +89,7 @@ static void __init wrtnode2q_gpio_led_setup(void)
 
 static void __init wrtnode2q_setup(void)
 {
-	u8 *art = (u8 *) KSEG1ADDR(0x1fff0000);
+	u8 *art = (u8 *) KSEG1ADDR(0x1f040000);
 
 	ath79_register_m25p80(NULL);
 
