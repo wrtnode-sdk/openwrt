@@ -187,7 +187,6 @@ platform_check_image() {
 	mr12 | \
 	mr16 | \
 	wpj558 | \
-	wrtnode2q | \
 	zcn-1523h-2 | \
 	zcn-1523h-5)
 		[ "$magic_long" != "68737173" -a "$magic_long" != "19852003" ] && {
@@ -199,6 +198,7 @@ platform_check_image() {
 	ap81 | \
 	ap83 | \
 	ap132 | \
+	wrtnode2q | \
 	dgl-5500-a1 |\
 	dhp-1565-a1 |\
 	dir-505-a1 | \
