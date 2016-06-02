@@ -18,7 +18,7 @@ local signal=-95
 local is_commit=0
 
 json_select $i
-while json_get_type type ssid && [ "$type" = string ]; do
+while json_get_type type bssid && [ "$type" = string ]; do
         json_get_var new_ssid ssid
 	[ $new_ssid = $ssid ] && {
 		json_get_var tmp_signal signal
@@ -27,7 +27,7 @@ while json_get_type type ssid && [ "$type" = string ]; do
 			json_select encryption
 			json_get_var enc_enabled enabled
 
-			uci delete wireless.apcli
+			uci delete wireless.apcli -q
 			uci set wireless.apcli=wifi-iface
 			uci set wireless.apcli.device='radio0'
 			uci set wireless.apcli.network='wwan'
