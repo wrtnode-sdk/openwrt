@@ -403,6 +403,19 @@
 		interrupts = <17>;
 	};
 
+	wmac: wmac@10300000 {
+		compatible = "mediatek,mt7628-wmac";
+		reg = <0x10300000 100000>;
+
+		interrupt-parent = <&cpuintc>;
+		interrupts = <6>;
+
+		status = "okay";
+
+		mediatek,mtd-eeprom = <&factory 0x0000>;
+		mediatek,5ghz = <0>;
+	};
+
 	pcie@10140000 {
 		compatible = "mediatek,mt7620-pci";
 		reg = <0x10140000 0x100
