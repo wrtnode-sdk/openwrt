@@ -496,6 +496,8 @@ static void esw_hw_init(struct rt305x_esw *esw)
 	else
 		esw_w32(esw, esw->pdata->reg_initval_fpa2, RT305X_ESW_REG_FPA2);
 	esw_w32(esw, 0x00000000, RT305X_ESW_REG_FPA);
+	
+	esw_w32(esw, 0x7d000000, 0x0110);
 
 	/* Force Link/Activity on ports */
 	esw_w32(esw, 0x00000005, RT305X_ESW_REG_P0LED);
@@ -1359,7 +1361,7 @@ static const struct switch_dev_ops esw_ops = {
 static struct rt305x_esw_platform_data rt3050_esw_data = {
 	/* All ports are LAN ports. */
 	.vlan_config            = RT305X_ESW_VLAN_CONFIG_NONE,
-	.reg_initval_fct2       = 0x00d6500c,
+	.reg_initval_fct2       = 0x0002500c,
 	/*
 	 * ext phy base addr 31, enable port 5 polling, rx/tx clock skew 1,
 	 * turbo mii off, rgmi 3.3v off
