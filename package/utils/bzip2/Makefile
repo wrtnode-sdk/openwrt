@@ -89,7 +89,6 @@ HOST_CFLAGS += \
 	$(HOST_LDFLAGS)
 
 HOST_MAKE_FLAGS+= \
-	-f Makefile-libbz2_so \
 	CFLAGS="$(HOST_CFLAGS)" \
 	all
 
@@ -99,7 +98,6 @@ HOST_CONFIGURE_ARGS+= \
 define Host/Install
 	$(INSTALL_DIR) $(STAGING_DIR_HOST)/bin/
 	$(MAKE) -C $(HOST_BUILD_DIR) PREFIX=$(STAGING_DIR_HOST)/usr/ install
-#	$(INSTALL_BIN) $(HOST_BUILD_DIR)/Parser/pgen $(STAGING_DIR_HOST)/bin/pgen2
 endef
 
 $(eval $(call HostBuild))

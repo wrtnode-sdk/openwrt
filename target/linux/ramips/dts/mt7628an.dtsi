@@ -337,12 +337,13 @@
 		#reset-cells = <1>;
 	};
 
-	usbphy: usbphy {
+	usbphy: usbphy@10120000 {
 		compatible = "ralink,mt7628an-usbphy", "ralink,mt7620a-usbphy";
+		reg = <0x10120000 1000>;
 		#phy-cells = <1>;
 
-		resets = <&rstctrl 22>;
-		reset-names = "host";
+		resets = <&rstctrl 22 &rstctrl 25>;
+		reset-names = "host", "device";
 	};
 
 	sdhci@10130000 {
@@ -400,6 +401,19 @@
 
 		interrupt-parent = <&intc>;
 		interrupts = <17>;
+	};
+
+	wmac: wmac@10300000 {
+		compatible = "mediatek,mt7628-wmac";
+		reg = <0x10300000 100000>;
+
+		interrupt-parent = <&cpuintc>;
+		interrupts = <6>;
+
+		status = "okay";
+
+		mediatek,mtd-eeprom = <&factory 0x0000>;
+		mediatek,5ghz = <0>;
 	};
 
 	pcie@10140000 {

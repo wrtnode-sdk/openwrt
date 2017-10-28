@@ -1,0 +1,54 @@
+#/bin/sh
+
+local ssid=$1
+local key=$2
+
+echo "WRTnode wireless-WAN tool"
+[ "$ssid"x = ""x ] && echo "Please Enter SSID" && exit
+
+. /usr/share/libubox/jshn.sh
+
+json_init
+json_load "$(ubus call iwinfo scan '{"device":"phy0"}')"
+json_select results
+_json_no_warning=1
+
+local i=1
+local signal=-95
+local is_commit=0
+
+json_select $i
+while json_get_type type bssid && [ "$type" = string ]; do
+        json_get_var new_ssid ssid
+	[ $new_ssid = $ssid ] && {
+		json_get_var tmp_signal signal
+		[ $tmp_signal -gt $signal ] && {
+			signal=$tmp_signal
+			json_select encryption
+			json_get_var enc_enabled enabled
+
+			uci delete wireless.apcli -q
+			uci set wireless.apcli=wifi-iface
+			uci set wireless.apcli.device='radio0'
+			uci set wireless.apcli.network='wwan'
+			uci set wireless.apcli.mode='sta'
+			uci set wireless.apcli.ssid=$ssid			
+
+			if [ "$enc_enabled" -gt 0  ]; then
+				uci set wireless.apcli.encryption='psk2'
+				uci set wireless.apcli.key=$key
+			else
+				uci set wireless.apcli.encryption='none'
+			fi
+			uci commit
+			is_commit=1
+
+			json_select ..
+		}
+	}
+	json_select ..
+	let i=i+1
+	json_select $i
+done
+[ "$is_commit" -eq 1 ] && wifi reload
+

@@ -1,0 +1,50 @@
+diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
+index 43204f4..067fb46 100644
+--- a/drivers/net/usb/qmi_wwan.c
++++ b/drivers/net/usb/qmi_wwan.c
+@@ -759,6 +759,7 @@ static const struct usb_device_id products[] = {
+ 	{QMI_FIXED_INTF(0x03f0, 0x581d, 4)},	/* HP lt4112 LTE/HSPA+ Gobi 4G Module (Huawei me906e) */
+ 
+ 	/* 4. Gobi 1000 devices */
++    	{QMI_GOBI1K_DEVICE(0x1e0e, 0x9001)},    /* SIM7100 Modem Device */
+ 	{QMI_GOBI1K_DEVICE(0x05c6, 0x9212)},	/* Acer Gobi Modem Device */
+ 	{QMI_GOBI1K_DEVICE(0x03f0, 0x1f1d)},	/* HP un2400 Gobi Modem Device */
+ 	{QMI_GOBI1K_DEVICE(0x04da, 0x250d)},	/* Panasonic Gobi Modem device */
+diff --git a/drivers/usb/serial/option.c b/drivers/usb/serial/option.c
+index bdbe642..bcd315b 100644
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -287,6 +287,7 @@ static void option_instat_callback(struct urb *urb);
+ #define ZTE_PRODUCT_MC2718			0xffe8
+ #define ZTE_PRODUCT_AD3812			0xffeb
+ #define ZTE_PRODUCT_MC2716			0xffed
++#define ZTE_PRODUCT_MZ382			0x0536
+ 
+ #define BENQ_VENDOR_ID				0x04a5
+ #define BENQ_PRODUCT_H10			0x4068
+@@ -366,6 +368,9 @@ static void option_instat_callback(struct urb *urb);
+ /* SpeedUp SU9800 usb 3g modem */
+ #define SPEEDUP_PRODUCT_SU9800			0x9800
+ 
++/* LongShang  U8300W  LET modem */
++#define LONGSHANG_PRODUCT_U8300W         0x9b05
++
+ /* Haier products */
+ #define HAIER_VENDOR_ID				0x201e
+ #define HAIER_PRODUCT_CE81B			0x10f8
+@@ -624,6 +629,7 @@ static const struct option_blacklist_info telit_le920_blacklist = {
+ };
+ 
+ static const struct usb_device_id option_ids[] = {
++	{ USB_DEVICE(ZTE_VENDOR_ID, ZTE_PRODUCT_MZ382) },
+ 	{ USB_DEVICE(OPTION_VENDOR_ID, OPTION_PRODUCT_COLT) },
+ 	{ USB_DEVICE(OPTION_VENDOR_ID, OPTION_PRODUCT_RICOLA) },
+ 	{ USB_DEVICE(OPTION_VENDOR_ID, OPTION_PRODUCT_RICOLA_LIGHT) },
+@@ -1655,6 +1662,7 @@ static const struct usb_device_id option_ids[] = {
+ 	{ USB_DEVICE_INTERFACE_CLASS(LONGCHEER_VENDOR_ID, SPEEDUP_PRODUCT_SU9800, 0xff) },
+ 	{ USB_DEVICE(LONGCHEER_VENDOR_ID, ZOOM_PRODUCT_4597) },
+ 	{ USB_DEVICE(LONGCHEER_VENDOR_ID, IBALL_3_5G_CONNECT) },
++	{ USB_DEVICE(LONGCHEER_VENDOR_ID, LONGSHANG_PRODUCT_U8300W) },
+ 	{ USB_DEVICE(HAIER_VENDOR_ID, HAIER_PRODUCT_CE100) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(HAIER_VENDOR_ID, HAIER_PRODUCT_CE81B, 0xff, 0xff, 0xff) },
+ 	/* Pirelli  */

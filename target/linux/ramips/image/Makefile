@@ -546,7 +546,7 @@ define BuildFirmware/HLKRM04/initramfs
 	$(call BuildFirmware/OF/initramfs,$(1),$(2),$(3),$(4))
 	mkhilinkfw -e -i$(call imgname,$(1),$(2))-uImage.bin -o $(call imgname,$(1),$(2))-factory.bin;
 endef
-Image/Build/Profile/HLKRM04=$(call BuildFirmware/HLKRM04/$(1),$(1),hlk-rm04,HLKRM04,HLK-RM02)
+Image/Build/Profile/HLKRM04=$(call BuildFirmware/HLKRM04/$(1),$(1),hlk-rm04,HLKRM04,HLK-RM04)
 
 Image/Build/Profile/HT-TM02=$(call BuildFirmware/Default8M/$(1),$(1),ht-tm02,HT-TM02)
 
@@ -880,6 +880,31 @@ endif
 #Image/Build/Profile/WMR300=$(call BuildFirmware/Default8M/$(1),$(1),wmr-300,WMR300)
 #Image/Build/Profile/RT-N14U=$(call BuildFirmware/Default8M/$(1),$(1),rt-n14u,RT-N14U)
 #Image/Build/Profile/WR8305RT=$(call BuildFirmware/Default8M/$(1),$(1),wr8305rt,WR8305RT)
+# $(1): (ignored)
+# $(2): lowercase board name
+# $(3): uppercase board name (must match DTS filename w/o extension)
+# $(4): erase block size
+# $(5): hardware id for mkdniimg
+# $(6): maximum image size
+define BuildFirmware/Netgear/squashfs
+	$(call PatchKernelLzmaDtb,$(2),$(3))
+	# Pad kernel to eraseblock boundary, minus 2 uImage headers (=128 bytes):
+	# bs = (eraseblock * (1 + (128 + kernelsize)/eraseblock)) - 128
+	dd if=$(KDIR)/vmlinux-$(2).bin.lzma \
+		of=$(KDIR)/vmlinux-$(2).bin.lzma.tmp \
+		bs=`expr \( $(4) \* \( 1 + \( 128 + \`wc -c < $(KDIR)/vmlinux-$(2).bin.lzma\` \) / $(4) \) \) - 128` \
+		count=1 conv=sync
+
+	$(call MkImage,lzma,$(KDIR)/vmlinux-$(2).bin.lzma.tmp,$(KDIR)/vmlinux-$(2).uImage)
+	cat ex2700-fakeroot.uImage >> $(KDIR)/vmlinux-$(2).uImage
+	$(call MkImageSysupgrade/squashfs,squashfs,$(2),$(6))
+
+	$(STAGING_DIR_HOST)/bin/mkdniimg \
+		-B $(3) -H $(5) -v OpenWrt \
+		-i $(call imgname,squashfs,$(2))-sysupgrade.bin \
+		-o $(call imgname,squashfs,$(2))-factory.bin
+endef
+
 Image/Build/Profile/WRTNODE=$(call BuildFirmware/Default16M/$(1),$(1),wrtnode,WRTNODE)
 #Image/Build/Profile/WT3020=$(call BuildFirmware/PorayDualSize/$(1),$(1),wt3020,WT3020)
 #Image/Build/Profile/XIAOMI-MIWIFI-MINI=$(call BuildFirmware/Default16M/$(1),$(1),xiaomi-miwifi-mini,XIAOMI-MIWIFI-MINI)
@@ -928,7 +953,7 @@ endif
 #
 
 ifeq ($(SUBTARGET),mt7621)
-  TARGET_DEVICES += mt7621 wsr-600 wsr-1166 dir-860l-b1 firewrt pbr-m1 re6500
+  TARGET_DEVICES += mt7621 wsr-600 wsr-1166 dir-860l-b1 firewrt pbr-m1 re6500 zbt-wg2626
 endif
 
 define Device/mt7621
@@ -974,6 +999,11 @@ define Device/pbr-m1
   IMAGE_SIZE := $(ralink_default_fw_size_16M)
 endef
 
+define Device/zbt-wg2626
+  DTS := ZBT-WG2626
+  IMAGE_SIZE := $(ralink_default_fw_size_16M)
+endef
+
 #
 # MT7628 Profiles
 #
@@ -994,7 +1024,7 @@ endif
 
 #Image/Build/Profile/MT7688=$(call BuildFirmware/Default4M/$(1),$(1),mt7628,MT7628)
 #Image/Build/Profile/LinkIt7688=$(call BuildFirmware/Default32M/$(1),$(1),LinkIt7688,LINKIT7688)
-Image/Build/Profile/WRTNODE2R=$(call BuildFirmware/Default16M/$(1),$(1),wrtnode2r,WRTNODE2R)
+Image/Build/Profile/WRTNODE2R=$(call BuildFirmware/Default32M/$(1),$(1),wrtnode2r,WRTNODE2R)
 Image/Build/Profile/WRTNODE2P=$(call BuildFirmware/Default16M/$(1),$(1),wrtnode2p,WRTNODE2P)
 
 ifeq ($(SUBTARGET),mt7628)

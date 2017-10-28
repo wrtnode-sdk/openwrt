@@ -124,7 +124,7 @@ void fe_reset(u32 reset_bits)
 
 	t &= ~reset_bits;
 	rt_sysc_w32(t, SYSC_REG_RSTCTRL);
-	udelay(10);
+	udelay(1000);
 }
 
 static inline void fe_int_disable(u32 mask)

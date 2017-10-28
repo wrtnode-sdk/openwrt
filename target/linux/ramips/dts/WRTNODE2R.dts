@@ -10,17 +10,21 @@
 		bootargs = "console=ttyS0,115200";
 	};
 
+	aliases {
+		spi0 = &spi0;
+	};
+
 	pinctrl {
 		state_default: pinctrl0 {
 			gpio {
-				ralink,group = "i2c", "gpio";
+				ralink,group = "i2c", "gpio", "wled_an";
 				ralink,function = "gpio";
 			};
 		};
 	};
 
 	palmbus@10000000 {
-		spi@b00 {
+		spi0: spi@b00 {
 			status = "okay";
 
 			m25p80@0 {
@@ -56,6 +60,14 @@
 				};
 			};
 
+
+			spidev@1 {
+				#address-cells = <1>;
+				#size-cells = <1>;
+				compatible = "spidev";
+				reg = <1 0>;
+				spi-max-frequency = <40000000>;
+			};
 		};
 
 		uart1@d00 {
@@ -76,6 +88,15 @@
 	pcie@10140000 {
 		status = "okay";
 	};
+
+	gpio-leds {
+		compatible = "gpio-leds";
+		indicator {
+			label = "wrtnode:blue:indicator";
+			gpios = <&gpio1 12 1>;
+		};
+	}; 
+
 
 	gpio-keys-polled {
 		compatible = "gpio-keys-polled";
